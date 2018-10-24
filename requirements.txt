@@ -1,0 +1,9 @@
+# Django packages
+django==2.1.2
+
+# Sql packages
+psycopg2==2.7.5
+
+# Utility packages
+python-decouple==3.1
+ipython==6.5.0
