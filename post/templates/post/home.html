@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <h3>Welcome to the Awesome Pastebin</h3>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label>Paste Title</label>
+        {{form.name}}
+      </div>
+      <div class="form-group">
+        <label>Paste Content</label>
+        {{form.content}}
+      </div>
+      <div class="form-group">
+        <label>Expiry Date</label>
+        {{form.expiry_date}}
+      </div>
+      {% if form.errors %}
+        <div class="form-group">
+          {{form.name.errors}}
+        </div>
+      {% endif %}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <h4>your post url</h4>
+    <p>{{post_url.post_url}}</p>
+  </div>
+</div>
+{% endblock %}

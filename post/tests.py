@@ -17,6 +17,10 @@ class PostModelTest(TestCase):
         post = Post.objects.create(name='the good post', content='good post')
         self.assertEqual(post.slug, 'the-good-post')
 
+    def test_can_generate_random_string(self):
+        post = Post.objects.create(name='awesome post', content='really awesome')
+        self.assertTrue(post.post_url)
+
     def test_cannot_save_duplicate_posts(self):
         Post.objects.create(name='test1', content='test1 content')
         with self.assertRaises(ValidationError):
