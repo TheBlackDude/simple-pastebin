@@ -4,6 +4,8 @@ from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+# from django.utils import timezone
+from datetime import datetime
 
 
 class Post(models.Model):
@@ -22,6 +24,13 @@ class Post(models.Model):
 
 @receiver(pre_save, sender=Post)
 def generate_slug(sender, instance, *args, **kargs):
+    # Check for all expired posts and delete them
+    # In a real application you'll do this using Celery and Rabitmq
+    # Or write a cutome command and execute it from a cron-tab or airflow
+    if len(Post.objects.all()) > 1:
+        for post in Post.objects.all():
+            if datetime.date(datetime.today()) > post.expiry_date:
+                post.delete()
     if instance.name:
         instance.slug = slugify(instance.name)
         instance.post_url = instance.random_string(7)

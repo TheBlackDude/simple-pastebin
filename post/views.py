@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import CreateView, DetailView, DeleteView
+from django.views.generic import CreateView, ListView, DetailView, DeleteView
 from django.urls import reverse_lazy
 
 from .models import Post
@@ -17,6 +17,14 @@ class HomeView(CreateView):
         context = super().get_context_data(**kwargs)
         context['post_url'] = Post.objects.last()
         return context
+
+class ListPostsView(ListView):
+    model = Post
+    template_name = 'post/list.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.order_by('expiry_date')
 
 
 class DetailView(DetailView):

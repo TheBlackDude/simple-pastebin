@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-6">
+      {% for post in object_list %}
+      <div>
+        Name: <p>{{post.name}}</p>
+        Content: <p>{{post.content}}</p>
+        Random Url: <p>{{post.post_url}}</p>
+        Expiry Date: <p>{{post.expiry_date}}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
