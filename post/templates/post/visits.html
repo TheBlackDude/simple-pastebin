@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-6">
+      {% for log in object_list %}
+      <div>
+        <h4>User Info</h4>
+        HTTP_USER_AGENT: <p>{{log.user_agent}}</p>
+        HTTP_COOKIE: <p>{{log.http_cookie}}</p>
+        REMOTE_ADDR: <p>{{log.remote_addr}}</p>
+        SERVER_NAME: <p>{{log.server_name}}</p>
+        Date Visited: <p>{{log.visit_date}}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

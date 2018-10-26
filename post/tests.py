@@ -27,6 +27,17 @@ class PostModelTest(TestCase):
             duplicate = Post(name='test1', content='test1 content')
             duplicate.full_clean()
 
+    def test_automatically_delete_expired_posts(self):
+        Post.objects.create(name='good post 1', content='yeh yeh',
+                            expiry_date='2018-10-25')
+        Post.objects.create(name='good post 2', content='yeh yeh',
+                            expiry_date='2018-10-25')
+        Post.objects.create(name='good post 3', content='yeh yeh',
+                            expiry_date='2018-10-27')
+        posts = Post.objects.all()
+
+        self.assertEqual(len(posts), 1)
+
 
 class PostFormTest(TestCase):
 

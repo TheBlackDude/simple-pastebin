@@ -14,6 +14,10 @@
       </div>
     </div>
     <div class="col-md-6">
+      <h4>All previous visits for this post</h4>
+      <div>
+        <a href="{% url 'visits' object.post_url %}">Visits</a>
+      </div>
       <h4>Delete Post</h4>
       <div>
         <a href="{% url 'delete' object.id %}">Delete me?</a>
