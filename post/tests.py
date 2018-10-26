@@ -1,5 +1,5 @@
 from django.test import TestCase
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 from .models import Post
 from .forms import PostForm
@@ -59,3 +59,35 @@ class PostFormTest(TestCase):
 
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['name'], ["You can't have two posts with the same name"])
+
+
+class PostViewTest(TestCase):
+
+    def test_home_view_renders_home_template(self):
+        response = self.client.get('/')
+        self.assertTemplateUsed(response, 'post/home.html')
+
+    def test_home_page_have_post_form(self):
+        response = self.client.get('/')
+        self.assertIsInstance(response.context['form'], PostForm)
+
+    def test_home_view_saving_post(self):
+        self.client.post('/', data={'name': 'good post',
+                                    'content': 'yeh good post',
+                                    'expiry_date': '2018-10-30'})
+        self.assertEqual(Post.objects.count(), 1)
+        post = Post.objects.first()
+        self.assertEqual(post.name, 'good post')
+
+    def test_list_view_renders_list_template(self):
+        response = self.client.get('/list/')
+        self.assertTemplateUsed(response, 'post/list.html')
+
+    def test_detail_view_renders_detail_template(self):
+        post = Post.objects.create(name='awesome post', content='awesome')
+        response = self.client.get('/{}'.format(post.post_url))
+        self.assertTemplateUsed(response, 'post/detail.html')
+
+    def test_detail_view_raises_error_if_wrong_post_url_passed(self):
+        with self.assertRaises(ObjectDoesNotExist):
+            response = self.client.get('/gbldll')
